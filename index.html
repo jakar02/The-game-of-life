@@ -1,0 +1,44 @@
+<!DOCTYPE html>   
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Gra w życie</title>
+	<link rel="stylesheet" type="text/css" href="style_index.css">
+</head>
+
+
+<body>
+	<header>
+		<h1>Gra w życie </h1>
+	</header>
+
+	<div class="form-container">
+		<nav>
+			<form id="login" action="login.php" method="post">
+                <input type="text" id="usernamelogin" name="usernamelogin" placeholder="Username"><br>
+                <input type="password" id="passwordlogin" name="passwordlogin" placeholder="Password"><br>
+                <input type="submit" name="login" value= "Zaloguj się">
+            </form>
+            <form id="register" action="regis.php" method="post">
+                <input type="text" id="usernameregister" name="usernameregister" placeholder="New username"><br>
+                <input type="password" id="passwordregister" name="passwordregister" placeholder="New password"><br>
+                <input type="submit" name="register" value="Zarejestruj się">
+            </form>
+            <form id="nologged" action="nologin.php" method="post">
+                <input type="submit" name="nologged" value="Wejdź bez logowania">
+            </form>
+		</nav>		
+	</div>
+
+
+	<!-- <h1>To nie Adam to Witek!</h1> -->
+	<!-- <form name="test" method="post" action="zad04log.php">
+		Podaj e-mail:<input type="text" name="email"><br/>
+		Podaj haslo:<input type="text" name="pass"><br/>
+		<input type="submit">
+	</form> -->
+
+</body>
+
+</html>

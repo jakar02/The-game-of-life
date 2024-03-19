@@ -1,0 +1,37 @@
+h1{
+    text-align: center;
+}
+
+html{
+    background-color: rgb(249, 239, 213);
+}
+
+.all_buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.all_buttons button,
+.all_buttons input[type=submit] {
+    background-color: #db9957;
+    border: solid 1px #8f4d02;
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    margin: 6px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 160px;
+    height: 40px;
+}
+
+
+.form-container {
+    padding: 15px;
+    display: grid;
+    place-items: center; 
+    text-align: left; 
+    max-width: 1040px; /* Ustaw maksymalną szerokość formularza */
+    margin: auto; /* Automatyczne centrowanie formularza */
+    background-color: rgb(242, 223, 175);
+}
+

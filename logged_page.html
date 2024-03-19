@@ -1,0 +1,167 @@
+<!DOCTYPE html>   
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Gra w życie</title>
+	<link rel="stylesheet" type="text/css" href="style_logged.css">
+	<link rel="shortcut icon" type="image/png"  href="death-note_39234.png"/>
+
+	<script src="script.js"></script>
+</head>
+
+
+
+
+<body>
+	<div class="form-container">
+		<div class="wyjasnienie">
+			<header>
+				<h1>Gra w życie </h1>
+			</header>		
+			<p>Gra w życie (ang. Conway's Game of Life) to przykład aparatu komórkowego. Została stworzona przez brytyjskiego matematyka,<br>Johna Conwaya w 1970 roku. Gra ma proste zasady, ale może generować złożone i nieprzewidywalne wzorce. Oto zasady:</p>
+			<ul>
+				<li><strong>Martwa komórka z trzema żywymi sąsiadami staje się żywa.</strong></li>
+				<li><strong>Żywa komórka z dwoma albo trzema żywymi sąsiadami pozostaje nadal żywa.</strong></li>
+				<li><strong>Komórka umiera, jeśli ma mniej niż dwóch lub więcej niż trzech żywych sąsiadów.</strong></li>
+			</ul>
+			<p>Stany komórek zmieniają się w pewnych jednostkach czasu. Stan komórki zależy tylko od liczby jej żywych sąsiadów. Kliknij lub <br> przeciągniej żeby oznaczyć żywe komórki, a następnie wciśnij "start".</p>
+
+
+		</div>
+
+
+		<canvas id="myCanvas" width="1000" height="600" style="border:1px solid #000000;"></canvas> 
+
+		<div class="all_buttons">
+			<button type="button" onclick="play_game_of_life()">Start</button>
+			<button type="button" onclick="stop_game()">Stop</button>
+			<button type="button" onclick="clear_canvas()">Wyczyść planszę</button>
+			<button type="button" id="load_board">Wczytaj planszę</button>
+			<button type="button" id="save_board">Zapisz planszę</button>
+			<!-- <button type="button" onclick="save_board()">Zapisz planszę</button> -->
+			<!-- <button type="button" onclick="load_board()">Wczytaj planszę</button> -->
+			<!-- <form id="load_board" action="load_board.php" method="post">
+                <input type="submit" name="load_board" value="Wczytaj planszę">
+            </form>
+			<form id="save_board" action="save_board.php" method="post">
+                <input type="submit" name="save_board" value="Zapisz planszę">
+            </form> -->
+		</div>
+
+		<script>
+			//robimy siatke 
+			isLoggedIn = true;
+			isMouseDown = false;
+			var width = 1000;
+			var height = 600;
+			const c = document.getElementById("myCanvas");
+			var ctx = c.getContext("2d");
+			for (let i = 0; i < height; i+=20) {
+				ctx.moveTo(0, i);
+				ctx.lineTo(width, i);
+				ctx.stroke();
+			}
+			for (let i = 0; i < width; i+=20) {
+				ctx.moveTo(i, 0);
+				ctx.lineTo(i, height);
+				ctx.stroke();
+			}
+
+			var ctx2 = c.getContext("2d");
+			ctx2.fillStyle = "rgb(249, 239, 213)";
+		
+			for(let i=0; i<52; i++){
+				for(let j=0; j<32; j++){
+					tab[i][j] = false;
+					ctx2.fillRect(20*i, 20*j, 19, 19);
+				}
+			}
+
+			//znajdujemy klikniete pole na canvasie
+			
+			c.addEventListener("mousedown", function (e) {
+				isMouseDown = true;
+				cliked_field(c, e);
+			});
+
+			c.addEventListener("mouseup", function () {
+				isMouseDown = false;
+			});
+
+			c.addEventListener("mousemove", function (e) {
+				if (isMouseDown) {
+					cliked_field(c, e);
+				}
+			});
+
+			
+
+			document.getElementById('save_board').addEventListener('click', function() {
+			if (isLoggedIn){
+				console.log("Zapis do bazy danych");
+				var jsonData = JSON.stringify(tab);
+				var xhr = new XMLHttpRequest();
+
+				// Skonfiguruj żądanie POST do pliku PHP
+				xhr.open("POST", "save_board.php", true);
+				xhr.setRequestHeader("Content-Type", "application/json");
+
+				// Obsługa zdarzenia po zakończeniu żądania
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === 4 && xhr.status === 200) {
+						// Odpowiedź z serwera
+						console.log(xhr.responseText);
+					}
+				};
+
+				// Wyślij żądanie z danymi JSON
+				xhr.send(jsonData);
+			}
+			else {
+				alert('Musisz byc zalogowany żeby zapisać dane.');
+			}
+			});
+
+
+
+
+			document.getElementById('load_board').addEventListener('click', function() {
+			if (isLoggedIn){
+				console.log("Odczyt z bazy danych");
+				var xhr = new XMLHttpRequest();			//xhr.setRequestHeader("Content-Type", "application/json");
+				
+				xhr.open("GET", "load_board.php", true);
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === 4 && xhr.status === 200) {
+						var board = JSON.parse(xhr.responseText); // Parsowanie odpowiedzi JSON
+						console.log(typeof board);
+						console.log(typeof board[2]);
+						console.log(typeof board[2][3]);
+						console.log(board);
+						for(let i=0; i<52; i++){
+							for(let j=0; j<32; j++){
+								tab[i][j] = (board[i][j] == true);
+							}
+						}
+						fill_with_color();
+						console.log("koniec wczytywania");
+        				console.log(tab);
+					}
+				};
+				
+				xhr.send();
+			}
+			else {
+				alert('Musisz byc zalogowany żeby odczytać dane.');
+			}
+			});
+
+
+
+
+		</script> 
+	</div>
+</body>
+
+</html>
